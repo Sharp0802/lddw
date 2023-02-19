@@ -1,0 +1,6 @@
+BasedOnStyle: Microsoft
+BraceBeforeBraces: Custom
+BraceWrapping:
+    AfterCaseLabel: true
+    AfterUnion: true
+IndentCaseLabels: true
