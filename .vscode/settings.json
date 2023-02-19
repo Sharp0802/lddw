@@ -1,0 +1,28 @@
+{
+    "files.associations": {
+        "fw.h": "c",
+        "ldd.h": "c",
+        "log.h": "c",
+        "windows.h": "c",
+        "shellapi.h": "c",
+        "winbase.h": "c",
+        "minwindef.h": "c",
+        "processenv.h": "c",
+        "winapi.h": "c",
+        "_mingw.h": "c",
+        "_mingw_secapi.h": "c",
+        "_mingw_unicode.h": "c",
+        "stdio.h": "c",
+        "stdarg.h": "c",
+        "psapi.h": "c",
+        "processthreadsapi.h": "c",
+        "stddef.h": "c",
+        "libloaderapi.h": "c",
+        "dbghelp.h": "c",
+        "_dbg_load_image.h": "c",
+        "_dbg_common.h": "c",
+        "excpt.h": "c"
+    },
+    "C_Cpp.clang_format_style": "file:${workspaceFolder}/.clang-format",
+    "cmake.sourceDirectory": "${workspaceFolder}/build"
+}
