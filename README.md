@@ -15,12 +15,13 @@ An example of its use and output is the following:
 
 ```powershell
 PS> lddw $(get-command rundll32).Source
-        msvcrt.dll  =>  C:\WINDOWS\System32\msvcrt.dll
-          ntdll.dll  =>  C:\WINDOWS\SYSTEM32\ntdll.dll
-          KERNELBASE.dll  =>  C:\WINDOWS\System32\KERNELBASE.dll
-            ntdll.dll  =>  C:\WINDOWS\SYSTEM32\ntdll.dll
-        imagehlp.dll  =>  not found
-        ntdll.dll  =>  C:\WINDOWS\SYSTEM32\ntdll.dll
+        msvcrt.dll  =>  C:\Windows\System32\msvcrt.dll (not loaded)
+          ntdll.dll  =>  C:\Windows\System32\ntdll.dll (0x7CAF0000)
+          KERNELBASE.dll  =>  C:\Windows\System32\KernelBase.dll (0x7A310000)
+            ntdll.dll  =>  C:\Windows\System32\ntdll.dll (0x7CAF0000)
+        imagehlp.dll  =>  C:\Windows\System32\imagehlp.dll (not loaded)
+          ntdll.dll  =>  C:\Windows\System32\ntdll.dll (0x7CAF0000)
+        ntdll.dll  =>  C:\Windows\System32\ntdll.dll (0x7CAF0000)
 ```
 
 In the usual case, `lddw` scan the import table section in PE header of file.
@@ -75,8 +76,8 @@ Set-Location project
 ./build.ps1 -Architecture x86-64 -Mode Release
 ```
 
-If you cannot run powershell script directly, 
-Instead of running powershell script, 
+If you cannot run powershell script directly,
+Instead of running powershell script,
 You can run `make` directly.
 
 ```sh
