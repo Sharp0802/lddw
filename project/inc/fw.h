@@ -23,7 +23,6 @@
 #ifdef MAX_PATH
 #undef MAX_PATH
 #endif
-
 #define MAX_PATH_A 260
 #define MAX_PATH_W 32767
 
@@ -32,5 +31,8 @@
 #else
 #define MAX_PATH MAX_PATH_A
 #endif
+
+#define malloc(size) HeapAlloc(GetProcessHeap(), 0, size)
+#define free(ptr) HeapFree(GetProcessHeap(), 0, ptr)
 
 #endif
