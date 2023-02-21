@@ -33,7 +33,7 @@ LDFLAGS += -march=$(ARCH)
 
 ifeq ($(MODE),Release)
 LDFLAGS += -Oz
-#LDFLAGS += -s -Wl,--strip-all
+LDFLAGS += -s -Wl,--strip-all
 LDFLAGS += -Wl,--gc-sections -ffunction-sections -fdata-sections -fno-asynchronous-unwind-tables
 LDFLAGS += -flto=thin
 else ifeq ($(MODE),Debug)
