@@ -11,21 +11,15 @@
     "\n"                                                                                                               \
     "  -h, --help              print this help and exit\n"                                                             \
     "  -V, --version           print version information and exit\n"                                                   \
-    "  -a, --all               print all dependencies including API-set"
+    "  -a, --all               print all dependencies including API-set\n"
 
 #define RES_VERSION                                                                                                    \
     "lddw (Windows NT) 0.1\n"                                                                                          \
-    "This is free software; see the source for copying conditions."
+    "This is free software; see the source for copying conditions.\n"
 
 #define ARGBASE_MAX INT32_MAX
 
-#if TRUE
-char __mingw_module_is_dll = 0;
-
 int mainCRTStartup(void)
-#else
-int main(void)
-#endif
 {
     int ret = 0;
 
@@ -38,25 +32,25 @@ int main(void)
 
     if (argv == NULL)
     {
-        _fputts(_T("lddw: Failed to parse command line\n"), stderr);
+        _pmsgt(_T("lddw: Failed to parse command line\n"));
         ret = -1;
         goto FINALIZE;
     }
     else if (argc < 2)
     {
-        _fputts(_T(RES_MISSING_FILE_ARGS), stderr);
-        _fputts(_T(RES_HELP_MSG), stderr);
+        _pmsgt(_T(RES_MISSING_FILE_ARGS));
+        _pmsgt(_T(RES_HELP_MSG));
         ret = -1;
         argbase = ARGBASE_MAX;
     }
     else if (wcscmp(L"-h", argv[argbase]) == 0 || wcscmp(L"--help", argv[argbase]) == 0)
     {
-        _putts(_T(RES_HELP_MANUAL));
+        _pmsgt(_T(RES_HELP_MANUAL));
         argbase = ARGBASE_MAX;
     }
     else if (wcscmp(L"-V", argv[argbase]) == 0 || wcscmp(L"--version", argv[argbase]) == 0)
     {
-        _putts(_T(RES_VERSION));
+        _pmsgt(_T(RES_VERSION));
         argbase = ARGBASE_MAX;
     }
     else if (wcscmp(L"-a", argv[argbase]) == 0 || wcscmp(L"--all", argv[argbase]) == 0)
@@ -69,13 +63,13 @@ int main(void)
     {
         if (ldd(args, argv[i]) < 0)
         {
-            _ctperr(argv[i], _T("Failed to load dependencies"));
+            cwperr(argv[i], L"Failed to load dependencies");
             ret = -1;
         }
     }
 
 FINALIZE:
-    if (argv != NULL)
+    if (argv)
         LocalFree(argv);
 
     return ret;
