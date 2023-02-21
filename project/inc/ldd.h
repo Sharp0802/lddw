@@ -9,6 +9,6 @@ struct LDD_ARGS
     bool bViewAll;
 };
 
-int ldd(struct LDD_ARGS args, LPCTSTR fname);
+int ldd(struct LDD_ARGS args, LPCWSTR fname);
 
 #endif
