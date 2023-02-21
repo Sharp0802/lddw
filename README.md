@@ -1,6 +1,6 @@
 # LDDW : LDD for Windows
 
-A ldd(List Dynamic Dependencies) implementation for windows, written in C99.
+A ldd(List Dynamic Dependencies) implementation for windows, written in C.
 
 ## SYNOPSIS
 
@@ -56,27 +56,32 @@ print all dependencies including API-set
 
 -   C Compiler
 
-Although both of `gcc` and `clang` are supported,
-Because `gcc` reports incorrect warnings by `-Wmaybe-uninitialized`,
-`clang` is strongly recommended.
+`gcc` causes a link error when compile `lddw` because of its name mangling about Win32 APIs.
+Thus, you need to use `clang` instead of `gcc`.
 
--   LLVM Linker
+-   Linker
 
 The standard dynamic linker (see [`ld`](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html)) causes a link error when compile `lddw`.
 So, you need to use `lld` instead of the standard dynamic linker.
 
 ### Compiling
 
--   Clang
+You can use build script file(see `project/build.ps1`) for powershell.
+Below is how to use script file.
 
 ```powershell
-Set-Location path/to/project/
-./build.ps1 clang
+Set-Location path/to/repository/
+Set-Location project
+./build.ps1 -Architecture x86-64 -Mode Release
 ```
 
--   GCC
+If you cannot run powershell script directly, 
+Instead of running powershell script, 
+You can run `make` directly.
 
-```powershell
-Set-Location path/to/project/
-./build.ps1 gcc
+```sh
+cd path/to/repository
+cd project
+mingw32-make clean
+mingw32-make all ARCH=x86-64 MODE=Release
 ```
