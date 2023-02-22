@@ -9,9 +9,10 @@
     "\n"                                                                                                               \
     "Print shared library dependencies\n"                                                                              \
     "\n"                                                                                                               \
+    "  -a, --all               print all dependencies including API-set\n"                                             \
+    "  -f, --flatten           print dependencies in flatten format, not tree format\n"                                \
     "  -h, --help              print this help and exit\n"                                                             \
-    "  -V, --version           print version information and exit\n"                                                   \
-    "  -a, --all               print all dependencies including API-set\n"
+    "  -V, --version           print version information and exit\n"
 
 #define RES_VERSION                                                                                                    \
     "lddw (Windows NT) 0.1\n"                                                                                          \
@@ -34,7 +35,7 @@ int mainCRTStartup(void)
     {
         _pmsgt(_T("lddw: Failed to parse command line\n"));
         ret = -1;
-        goto FINALIZE;
+        argbase = ARGBASE_MAX;
     }
     else if (argc < 2)
     {
@@ -53,9 +54,18 @@ int mainCRTStartup(void)
         _pmsgt(_T(RES_VERSION));
         argbase = ARGBASE_MAX;
     }
-    else if (wcscmp(L"-a", argv[argbase]) == 0 || wcscmp(L"--all", argv[argbase]) == 0)
+
+    if (argbase == ARGBASE_MAX)
+        goto FINALIZE;
+
+    if (wcscmp(L"-a", argv[argbase]) == 0 || wcscmp(L"--all", argv[argbase]) == 0)
     {
         args.bViewAll = true;
+        argbase++;
+    }
+    if (wcscmp(L"-f", argv[argbase]) == 0 || wcscmp(L"--flatten", argv[argbase]) == 0)
+    {
+        args.bFlatten = true;
         argbase++;
     }
 
