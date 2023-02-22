@@ -37,6 +37,14 @@ Thus, You can use `lddw` on an untrusted executable.
 
 ## OPTIONS
 
+-   `-a`, `--all`
+
+Print all dependencies including API-set
+
+-   `-f`, `--flatten`
+
+Print dependencies on flatten format, not tree format
+
 -   `-h`, `--help`
 
 Usage information
@@ -44,10 +52,6 @@ Usage information
 -   `-V`, `--version`
 
 Print version information and exit
-
--   `-a`, `--all`
-
-print all dependencies including API-set
 
 ## BUILDING
 

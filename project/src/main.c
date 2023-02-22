@@ -10,7 +10,7 @@
     "Print shared library dependencies\n"                                                                              \
     "\n"                                                                                                               \
     "  -a, --all               print all dependencies including API-set\n"                                             \
-    "  -f, --flatten           print dependencies in flatten format, not tree format\n"                                \
+    "  -f, --flatten           print dependencies on flatten format, not tree format\n"                                \
     "  -h, --help              print this help and exit\n"                                                             \
     "  -V, --version           print version information and exit\n"
 
