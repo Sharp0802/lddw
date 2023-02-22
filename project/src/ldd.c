@@ -3,16 +3,23 @@
 #define OpenFileR(f) CreateFileW(f, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL)
 
 int __findlib(LPCWSTR fname, LPWSTR fpath, DWORD size);
-int __impl_static_ldd(struct LDD_ARGS args, LPCVOID fdat, LPCWSTR fname, int depth);
-int __impl_ldd(struct LDD_ARGS args, LPCWSTR fname, int depth);
+int __impl_static_ldd(struct LDD_ARGS args, LPCVOID fdat, LPCWSTR fname, int depth, struct DICT *dict);
+int __impl_ldd(struct LDD_ARGS args, LPCWSTR fname, int depth, struct DICT *dict);
 DWORD __rva2offset(DWORD rva, PIMAGE_SECTION_HEADER secH, PIMAGE_NT_HEADERS ntH);
 
 int ldd(const struct LDD_ARGS args, const LPCWSTR fname)
 {
-    return __impl_ldd(args, fname, 0);
+    struct DICT dict = dict__new(__eqcmp_wcs);
+
+    int ret = __impl_ldd(args, fname, 0, &dict);
+
+    // dict__print(&dict, __print_wcs);
+    dict__free(&dict);
+
+    return ret;
 }
 
-int __impl_ldd(const struct LDD_ARGS args, const LPCWSTR fname, int depth)
+int __impl_ldd(const struct LDD_ARGS args, const LPCWSTR fname, int depth, struct DICT *dict)
 {
     LPWSTR fpath = malloc(MAX_PATH_W * sizeof(WCHAR));
     fpath[0] = 0;
@@ -49,7 +56,7 @@ int __impl_ldd(const struct LDD_ARGS args, const LPCWSTR fname, int depth)
         goto FINALIZE_FBASE;
     }
 
-    ret = __impl_static_ldd(args, fbase, fname, depth);
+    ret = __impl_static_ldd(args, fbase, fname, depth, dict);
 
 FINALIZE_FBASE:
     if (fbase)
@@ -63,7 +70,7 @@ FINALIZE_FP:
     return ret;
 }
 
-int __impl_static_ldd(struct LDD_ARGS args, const LPCVOID fdat, const LPCWSTR fname, int depth)
+int __impl_static_ldd(struct LDD_ARGS args, const LPCVOID fdat, const LPCWSTR fname, int depth, struct DICT *dict)
 {
     PIMAGE_DOS_HEADER dosH = (PIMAGE_DOS_HEADER)fdat;
     PIMAGE_NT_HEADERS ntH = (PIMAGE_NT_HEADERS)((ULONG_PTR)fdat + dosH->e_lfanew);
@@ -111,8 +118,12 @@ int __impl_static_ldd(struct LDD_ARGS args, const LPCVOID fdat, const LPCWSTR fn
             MultiByteToWideChar(CP_UTF8, 0, namea, strlen(namea) + 1, namew, MAX_PATH_W);
         }
 
+        // check duplicates if `--flatten` enabled
+        if (args.bFlatten && !dict__add(dict, namew, (wcslen(namew) + 1) * sizeof(WCHAR)))
+            continue;
+
         // print indents
-        for (int i = 0; i < depth + 4; ++i)
+        for (int i = 0; i < (args.bFlatten ? 0 : depth) + 4; ++i)
             pmsg("  ");
 
         // print library name
@@ -143,7 +154,7 @@ int __impl_static_ldd(struct LDD_ARGS args, const LPCVOID fdat, const LPCWSTR fn
         // recurse listing
         if (found == 0)
         {
-            __impl_ldd(args, fpath, depth + 1);
+            __impl_ldd(args, fpath, depth + 1, dict);
         }
 
         free(fpath);
