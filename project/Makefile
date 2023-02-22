@@ -23,12 +23,12 @@ CFLAGS += -flto=thin
 else ifeq ($(MODE),Debug)
 CFLAGS += -Og -glldb -gfull -ggdb
 CFLAGS += -fstack-protector-all
+CFLAGS += -D_DEBUG -DDEBUG
 endif
 
 
 LDFLAGS := -nostdlib -nostartfiles
 LDFLAGS += -fuse-ld=lld
-LDFLAGS += -Wl,--wrap=malloc -Wl,--wrap=free
 LDFLAGS += -march=$(ARCH)
 
 ifeq ($(MODE),Release)
@@ -42,7 +42,7 @@ LDFLAGS += -fstack-protector-all
 endif
 
 
-OBJ := ldd.o log.o main.o
+OBJ := dict.o ldd.o log.o main.o
 OBJ := $(addprefix $(ROOT)/tmp/, $(OBJ))
 
 all : $(OBJ)

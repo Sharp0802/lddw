@@ -3,6 +3,7 @@
         "fw.h": "c",
         "ldd.h": "c",
         "log.h": "c",
+        "dict.h": "c",
         "windows.h": "c",
         "shellapi.h": "c",
         "winbase.h": "c",
