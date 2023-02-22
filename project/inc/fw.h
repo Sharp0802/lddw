@@ -34,5 +34,6 @@
 
 #define malloc(size) HeapAlloc(GetProcessHeap(), 0, size)
 #define free(ptr) HeapFree(GetProcessHeap(), 0, ptr)
+#define realloc(ptr, size) HeapReAlloc(GetProcessHeap(), 0, ptr, size)
 
 #endif
